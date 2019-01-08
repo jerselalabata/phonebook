@@ -1,16 +1,6 @@
 <?php 
 include('server.php');
-	if (isset($_GET['edit'])) {
-		$id = $_GET['edit'];
-		$update = true;
-		$record = mysqli_query($db, "SELECT * FROM contacts WHERE id=$id");
 
-		$n = mysqli_fetch_array($record);
-		$name = $n[1];
-		$numbers = $n[2];
-		
-		
-	}
 ?>
 <!DOCTYPE html>
 <html>
@@ -41,7 +31,7 @@ tr:nth-child(even){background-color: #f2f2f2}
 <nav class="navbar navbar-inverse">
   <div class="container-fluid">
     <div class="navbar-header">
-      <a class="navbar-brand" href="#">My Phonebook</a>
+      <a class="navbar-brand">My Phonebook</a>
     </div>
     <ul class="nav navbar-nav navbar-right">
       <li><a href="register.php"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
@@ -49,7 +39,11 @@ tr:nth-child(even){background-color: #f2f2f2}
     </ul>
   </div>
 </nav>
-<?php $results = mysqli_query($db, "SELECT * FROM contacts"); ?>
+<?php
+	if(isset($_GET['username'])){
+		$username = $_GET['username'];
+		$results = mysqli_query($db, "SELECT * FROM users, contacts WHERE users.username = '$username' AND contacts.username = '$username'");	
+	}  ?>
 <div style="overflow-x:auto;">
 <table>
 	<thead>
@@ -72,7 +66,7 @@ tr:nth-child(even){background-color: #f2f2f2}
 			</td>
 		</tr>
 	<?php } ?>
-	<a href="index.php" class="btn btn-info" role="button">Back</a>
+	<a href="index.php?username=<?php echo $_GET['username']; ?>" class="btn btn-info" role="button">Add Contacts</a>
 
 
 </table>

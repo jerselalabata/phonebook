@@ -1,16 +1,5 @@
 <?php 
 include('server.php');
-	if (isset($_GET['edit'])) {
-		$id = $_GET['edit'];
-		$update = true;
-		$record = mysqli_query($db, "SELECT * FROM contacts WHERE id=$id");
-
-    $n = mysqli_fetch_array($record);
-	$name = $n[1];
-	$numbers = $n[2];
-    
-		
-	}
 
 	  if (!isset($_SESSION['username'])) {
 	  	$_SESSION['msg'] = "You must log in first";
@@ -58,7 +47,7 @@ include('server.php');
 
 	
 
-<form method="post" action="server.php" >
+<form method="post" action="" >
 
 	<input type="hidden" name="id" value="<?php echo $id; ?>">
 
@@ -75,7 +64,7 @@ include('server.php');
 			<button class="btn" type="submit" name="update" style="background: #556B2F;" >update</button>
 		<?php else: ?>
 			<button class="btn" type="submit" name="save" >Save</button>
-		 	<a href="view.php" class="btn btn-info" role="button">View</a>
+		 	<a href="view.php?username=<?php echo $_GET['username']; ?>" class="btn btn-info" role="button">View</a>
 		<?php endif ?>
 
 		<?php  if (isset($_SESSION['username'])) : ?>

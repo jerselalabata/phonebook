@@ -81,7 +81,7 @@ if (isset($_POST['login_user'])) {
   	if (mysqli_num_rows($results) == 1) {
   	  $_SESSION['username'] = $username;
   	  $_SESSION['success'] = "You are now logged in";
-  	  header('location: index.php');
+  	  header('location: index.php?username='.$username);
   	}else {
   		array_push($errors, "Wrong username/password combination");
   	}
@@ -89,31 +89,57 @@ if (isset($_POST['login_user'])) {
 }
 
 //insert data into database 
-  if (isset($_POST['save'])) {
+  if (isset($_POST['save'],$_GET['username'])) {
+    $username = $_GET['username'];
     $name = $_POST['name'];
     $numbers = $_POST['numbers'];
     $user_id = $_POST['user_id'];
 
-    mysqli_query($db, "INSERT INTO contacts (name, numbers, users_id) VALUES ('$name', '$numbers','$user_id')"); 
+    mysqli_query($db, "INSERT INTO contacts (name, numbers, username) VALUES ('$name', '$numbers','$username')"); 
     $_SESSION['message'] = "saved"; 
-    header('location: index.php');
+    header('location: view.php?username='.$username);
   }
 
+  if (isset($_GET['edit'])) {
+    $id = $_GET['edit'];
+    $update = true;
+    $record = mysqli_query($db, "SELECT * FROM contacts WHERE id=$id");
+
+    $n = mysqli_fetch_array($record);
+    $name = $n[1];
+    $numbers = $n[2];
+    
+    
+  }
 // update data into database
   if (isset($_POST['update'])) {
     $id = $_POST['id'];
     $name = $_POST['name'];
     $numbers = $_POST['numbers'];
 
-    mysqli_query($db, "UPDATE contacts SET name='$name', numbers='$numbers' WHERE id=$id");
-    $_SESSION['message'] = "updated!"; 
-    header('location: view.php');
+    $query = "SELECT username FROM contacts WHERE id=$id";
+    $result = mysqli_query($db,$query);
+    if (mysqli_num_rows($result)==1){
+      while ($row = mysqli_fetch_assoc($result)) {
+        mysqli_query($db, "UPDATE contacts SET name='$name', numbers='$numbers' WHERE id=$id");
+        $_SESSION['message'] = "updated!"; 
+        header('location: view.php?username='.$row['username']);
+
+      }
+    }
   }
 //delete data into database
 if (isset($_GET['del'])) {
   $id = $_GET['del'];
-  mysqli_query($db, "DELETE FROM contacts WHERE id=$id"); 
-  header('location: view.php');
+
+  $query = "SELECT username FROM contacts WHERE id=$id";
+  $result = mysqli_query($db,$query);
+  if (mysqli_num_rows($result)==1){
+    while ($row = mysqli_fetch_assoc($result)) {
+      mysqli_query($db, "DELETE FROM contacts WHERE id=$id"); 
+      header('location: view.php?username='.$row['username']);
+    }
+  }
 }
 
 
