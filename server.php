@@ -93,7 +93,6 @@ if (isset($_POST['login_user'])) {
     $username = $_GET['username'];
     $name = $_POST['name'];
     $numbers = $_POST['numbers'];
-    $user_id = $_POST['user_id'];
 
     mysqli_query($db, "INSERT INTO contacts (name, numbers, username) VALUES ('$name', '$numbers','$username')"); 
     $_SESSION['message'] = "saved"; 

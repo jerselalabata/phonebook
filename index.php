@@ -30,8 +30,7 @@ include('server.php');
       <a class="navbar-brand" href="#">My Phonebook</a>
     </div>
     <ul class="nav navbar-nav navbar-right">
-      <li><a href="register.php"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
-      <li><a href="login.php"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+      <a href="index.php?logout='1'" class="btn" type="button" style="color: none;">logout</a>
     </ul>
   </div>
 </nav>
@@ -68,7 +67,7 @@ include('server.php');
 		<?php endif ?>
 
 		<?php  if (isset($_SESSION['username'])) : ?>
-    	<p> <a href="index.php?logout='1'" style="color: red;">logout</a> </p>
+    	
     <?php endif ?>
 	</div>
 </form>
